@@ -18,15 +18,15 @@ class PuffinSm(object):
     #configuration data
     logfile = "./puffin.log"
     mp3_root = "./mp3s/"
-    intro_mp3="Saffran Intro.mp3"
-    mistake_mp3="Saffran Mistake.mp3"
-    switchboard_mp3 = "All Numbers.mp3"
-    welcome_mp3 = "Saffran Intro.mp3"
-    author_mp3 = ["Jamie Story.mp3",
-                   "Collete Story_v2.mp3",
-                   "Guy Story.mp3",
-                   "Maggie Story.mp3",
-                   "Saffran Story.mp3",
+    intro_mp3="audio/Saffran Intro.mp3"
+    mistake_mp3="audio/Saffran Mistake.mp3"
+    switchboard_mp3 = "audio/All Numbers.mp3"
+    welcome_mp3 = "audio/Saffran Intro.mp3"
+    author_mp3 = ["audio/Jamie Story.mp3",
+                   "audio/Collete Story_v2.mp3",
+                   "audio/Guy Story.mp3",
+                   "audio/Maggie Story.mp3",
+                   "audio/Saffran Story.mp3",
                    ]
     dispenserDevices = [
         "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.1:1.0-port0",
@@ -149,11 +149,12 @@ class PuffinSm(object):
         pygame.mixer.music.set_endevent(self.TRACK_END)
         pygame.event.clear(self.TRACK_END)
         self.author_selection = 0
-        #self.log = open(self.logfile, "w+")
         logging.basicConfig(filename=self.logfile, datefmt='%m/%d/%Y %I:%M%p', format='%(levelname)s:%(asctime)s: %(message)s',level=logging.INFO)
         console = logging.StreamHandler()
         console.setLevel(logging.INFO)
         logging.getLogger('').addHandler(console)
+	#enable logging here:
+	logging.getLogger('').disabled = True
         self.write_log("Initialised state machine\n")
         #self.lightOn()
         self.ser = serial.Serial(self.arduinoFile,115200,timeout=2)
