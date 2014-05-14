@@ -23,6 +23,6 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-@reboot /home/penguinphone/puffin.sh &
-@reboot /home/penguinphone/puffin-master/upload.sh &
+@reboot /home/penguinphone/dialastory/puffin.sh &
+@reboot /home/penguinphone/dialastory/upload.sh &
 0 0,8 * * * reboot

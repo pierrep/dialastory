@@ -37,9 +37,9 @@ Add
 to /boot/cmdline.txt
 
 
-Copy the cron/penguinphone file to
+Enter the cron/ directory and do the following:
 
-    /var/spool/cron/crontabs/
+    sudo crontab penguinphone
     
 
 
