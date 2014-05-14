@@ -41,5 +41,11 @@ Enter the cron/ directory and do the following:
 
     sudo crontab penguinphone
     
+    
+Copy utils/99-puffin.rules to 
+
+    /etc/udev/rules.d/
+and edit to replace dispenser ids
+    
 
 
