@@ -37,7 +37,7 @@ class PuffinSm(object):
         ]
 
     scannerKeyDev = [
-        "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.4:1.0-event-kbd",
+        "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.5:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.3:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.1.2:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.1.3:1.0-event-kbd",
@@ -154,7 +154,7 @@ class PuffinSm(object):
         console.setLevel(logging.INFO)
         logging.getLogger('').addHandler(console)
 	#enable logging here:
-	logging.getLogger('').disabled = True
+	#logging.getLogger('').disabled = True
         self.write_log("Initialised state machine\n")
         #self.lightOn()
         self.ser = serial.Serial(self.arduinoFile,115200,timeout=2)

@@ -8,7 +8,7 @@ class WavRecord(object):
     fname = None
     stream = None
     wave = None
-    sampleRate = 44100
+    sampleRate = 32000
     chunkSize = 4096
     doRecord = None
     def __init__(self, fname):
