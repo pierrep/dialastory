@@ -29,7 +29,8 @@ class PuffinSm(object):
                    "audio/Saffran Story.mp3",
                    ]
     dispenserDevices = [
-        "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.1:1.0-port0",
+	"/dev/ttyUSB0",
+#        "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.1:1.0-port0",
         "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.5:1.0-port0",
         "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.2:1.0-port0",
         "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.3:1.0-port0",
@@ -37,7 +38,8 @@ class PuffinSm(object):
         ]
 
     scannerKeyDev = [
-        "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.5:1.0-event-kbd",
+	"/dev/input/event0",
+#        "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.2.5:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.3:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.1.2:1.0-event-kbd",
         "/dev/input/by-path/platform-bcm2708_usb-usb-0:1.3.7.1.3:1.0-event-kbd",
@@ -84,11 +86,13 @@ class PuffinSm(object):
     def dispense_and_scan(self, author_selection):
         j = 0
         start_time = time.time()
-        f = open(self.dispenserDevices[0], "wb")
+        #f = open(self.dispenserDevices[0], "wb")
+        f = open("/dev/ttyUSB0", "wb")
         f.write("020180000380".decode("hex"))
         f.flush()
         f.close()
-        k = Keyboard(self.scannerKeyDev[0])
+        #k = Keyboard(self.scannerKeyDev[0])
+        k = Keyboard("/dev/input/event0")
         k.flush()
         code = ""
         i = 0
@@ -249,7 +253,7 @@ class PuffinSm(object):
             self.tmpwav = tempfile.mkstemp()[1]
             recorder = WavRecord(self.tmpwav)
             recorder.start()
-            while (time.time() - start_time < 30 and self.read_arduino(sleep=False)[0]):
+            while (time.time() - start_time < 240 and self.read_arduino(sleep=False)[0]):
                 pass
             recorder.stop()
             if (time.time() - start_time) < 3:
@@ -265,10 +269,10 @@ class PuffinSm(object):
             self.write_log("Dispensing card and pairing audio from dispenser %d, barcode %s\n" % (self.author_selection, barcode))
             if barcode is "":
                 #unable to pair, just compress and store with the current ctime
-                comp = Mp3Store(self.tmpwav, self.mp3_root + str(int(time.time()))+ ".mp3")
+                comp = Mp3Store(self.tmpwav, str(int(time.time()))+ ".mp3", self.mp3_root)
                 comp.compress()
             else:
-                comp = Mp3Store(self.tmpwav, self.mp3_root + barcode + ".mp3")
+                comp = Mp3Store(self.tmpwav, barcode + ".mp3", self.mp3_root)
                 comp.compress()
             os.unlink(self.tmpwav)
             self.state = self.STATE_IDLE

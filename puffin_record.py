@@ -3,6 +3,7 @@ import pyaudio
 import wave
 import os
 import pygame
+import tempfile
 
 class WavRecord(object):
     fname = None
@@ -39,21 +40,28 @@ class WavRecord(object):
         self.doRecord = None
 
 class Mp3Store(object):
-    def __init__(self, wavname, mp3name):
+    def __init__(self, wavname, mp3name, targetLocation):
         self.wavname = wavname
         self.mp3name = mp3name
+	self.targetLocation = targetLocation
     def compress(self):
         os.system("/usr/bin/lame %s %s 2>&1 > /dev/null" % (self.wavname, self.mp3name))
+	print "compression done, moving to " + self.targetLocation
+	os.system("mv %s %s" % (self.mp3name, self.targetLocation + self.mp3name))
 
 
 if __name__ == "__main__":
     import time
     pygame.init()
     pygame.mixer.init()
-    recorder = WavRecord("test.wav")
+    tmpwav = tempfile.mkstemp()[1]
+    recorder = WavRecord(tmpwav)
+    #recorder = WavRecord("test.wav")
     recorder.start()
-    for i in range(0,5):
+    for i in range(0,40):
         print i
         time.sleep(1)
     recorder.stop()
     recorder = None
+    comp = Mp3Store(tmpwav,  str(int(time.time()))+ ".mp3", "./mp3s/")
+    comp.compress()
