@@ -8,6 +8,7 @@ Dial A Story
 **Install & Setup**
 
     sudo apt-get install python-serial
+    sudo apt-get install python-paramiko
     sudo apt-get install lame mpg123
 
 
