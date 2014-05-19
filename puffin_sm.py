@@ -227,7 +227,8 @@ class PuffinSm(object):
 
         elif self.state == self.STATE_PLAYING_AUTHOR:
             #pygame.mixer.music.load(self.author_mp3[self.author_selection])
-	    author_mp3 = "audio/Author" + str(self.author_selection + 1) + "short" + ".mp3"
+	    #author_mp3 = "audio/Author" + str(self.author_selection + 1) + "short" + ".mp3"
+	    author_mp3 = "audio/Author" + str(self.author_selection + 1) + ".mp3"
             pygame.mixer.music.load(author_mp3)
             pygame.mixer.music.play()
             self.write_log("Playing " + author_mp3 )
