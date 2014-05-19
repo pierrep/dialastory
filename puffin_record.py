@@ -46,7 +46,7 @@ class Mp3Store(object):
 	self.targetLocation = targetLocation
     def compress(self):
         os.system("/usr/bin/lame %s %s 2>&1 > /dev/null" % (self.wavname, self.mp3name))
-	print "compression done, moving to " + self.targetLocation
+	print "compression done, moving to " + self.targetLocation + self.mp3name
 	os.system("mv %s %s" % (self.mp3name, self.targetLocation + self.mp3name))
 
 

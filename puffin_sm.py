@@ -17,17 +17,11 @@ class PuffinSm(object):
     #XXX Fix this to match the target platform 
     #configuration data
     logfile = "./puffin.log"
-    mp3_root = "./mp3s/"
+    mp3_root = "/home/penguinphone/dialastory/mp3s/"
     intro_mp3="audio/Saffran Intro.mp3"
     mistake_mp3="audio/Saffran Mistake.mp3"
     switchboard_mp3 = "audio/All Numbers.mp3"
     welcome_mp3 = "audio/Saffran Intro.mp3"
-    author_mp3 = ["audio/Jamie Story.mp3",
-                   "audio/Collete Story_v2.mp3",
-                   "audio/Guy Story.mp3",
-                   "audio/Maggie Story.mp3",
-                   "audio/Saffran Story.mp3",
-                   ]
     dispenserDevices = [
 	"/dev/ttyUSB0",
 #        "/dev/serial/by-path/platform-bcm2708_usb-usb-0:1.3.1:1.0-port0",
@@ -85,7 +79,6 @@ class PuffinSm(object):
 
     def dispense_and_scan(self, author_selection):
         j = 0
-        start_time = time.time()
         #f = open(self.dispenserDevices[0], "wb")
         f = open("/dev/ttyUSB0", "wb")
         f.write("020180000380".decode("hex"))
@@ -175,19 +168,14 @@ class PuffinSm(object):
             pygame.event.clear(self.TRACK_END)
             self.write_log("Entering Idle State...")
 
-        if self.state == self.STATE_RING:
-            self.sound_ringer()
-            self.state = self.STATE_IDLE
-            self.write_log("Reached 300 second timeout, sounding ringer\n")
-            self.last_lift_time = time.time()
-
-        elif  self.state == self.STATE_IDLE:
+        if  self.state == self.STATE_IDLE:
             #self.write_log("Idle State...")
             self.authorselection = 0
             self.tmpfile = None
             if (time.time() - self.last_lift_time) > 300:
-                self.state = self.STATE_RING
-                #self.write_log("Sounding ringer due to inactivity\n")
+            	#self.sound_ringer()
+            	self.write_log("Reached 300 second timeout, sounding ringer\n")
+            	self.last_lift_time = time.time()
 
             if (self.read_arduino()[0]):
                 self.last_lift_time = time.time()
@@ -238,9 +226,11 @@ class PuffinSm(object):
             self.state = self.STATE_SWITCHBOARD
 
         elif self.state == self.STATE_PLAYING_AUTHOR:
-            pygame.mixer.music.load(self.author_mp3[self.author_selection])
+            #pygame.mixer.music.load(self.author_mp3[self.author_selection])
+	    author_mp3 = "audio/Author" + str(self.author_selection + 1) + "short" + ".mp3"
+            pygame.mixer.music.load(author_mp3)
             pygame.mixer.music.play()
-            self.write_log("Playing selected author mp3 %s\n" % self.author_mp3[self.author_selection])
+            self.write_log("Playing " + author_mp3 )
             #user must wait for completion of the welcome before we continue
             while (not self.sound_ended() and self.read_arduino()[0]):
                 pass
