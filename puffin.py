@@ -7,6 +7,7 @@ import sys
 
 def signal_handler(signal,frame):
     print '\nCtrl-C pressed....exiting!'
+    sm.doExit = 1
     sys.exit(0)
 
 if __name__ == "__main__":

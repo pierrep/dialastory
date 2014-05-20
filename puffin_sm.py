@@ -52,11 +52,12 @@ class PuffinSm(object):
     STATE_RING = 10
     state = 0
     last_lift_time = None
-
+    doExit = 0
 
     def reset_arduino(self):
-        #self.ser.flushInput()
-        self.ser.write('8')
+        self.ser.flushInput()
+        b = self.ser.write('8')
+	print "bytes written in reset arduino = " + str(b)
         #time.sleep(0.01)
 
 
@@ -72,6 +73,7 @@ class PuffinSm(object):
             if (len(key) == 0):
                 key = None
             hang = line.split(':')[0].lstrip().rstrip()
+	    #print "arduino key = " + str(key)
             return (line.split(':')[0].lstrip().rstrip() == '0', key);
         except:
             return (False,None)
@@ -161,6 +163,8 @@ class PuffinSm(object):
 
     def runState(self):
         #detect hangup and return to idle:
+	if self.doExit == 1:
+		return
         if not self.read_arduino()[0] and self.state != self.STATE_IDLE and self.state != self.STATE_DISPENSE_AND_PAIR:
             self.state = self.STATE_IDLE
             self.write_log("Handset replaced, terminating session\n")
@@ -199,14 +203,24 @@ class PuffinSm(object):
                     self.author_selection = int(key)-1
                     self.state = self.STATE_PLAYING_AUTHOR
                     pygame.mixer.music.stop()
+                    pygame.mixer.music.load("audio/keysounds/"+str(key)+".mp3")
+                    pygame.mixer.music.play()
+		    time.sleep(0.2)
                     break
                 elif key is not None:
+        	    self.ser.flushInput()
                     self.reset_arduino()
                     self.write_log("User pressed wrong key "+key) 
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("audio/keysounds/"+str(key)+".mp3")
+                    pygame.mixer.music.play()
+		    time.sleep(0.2)
+                    pygame.mixer.music.stop()
                     pygame.mixer.music.load(self.mistake_mp3)
                     pygame.mixer.music.play()
                     while (not self.sound_ended()):
                         pass
+                    self.reset_arduino()
                     #play it again!
                     break;
 
