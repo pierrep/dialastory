@@ -176,10 +176,12 @@ class PuffinSm(object):
             #self.write_log("Idle State...")
             self.authorselection = 0
             self.tmpfile = None
-            if (time.time() - self.last_lift_time) > 300:
+            if (time.time() - self.last_lift_time) > 600:
             	#self.sound_ringer()
-            	self.write_log("Reached 300 second timeout, sounding ringer\n")
+            	self.write_log("Reached 600 second timeout, sounding ringer\n")
             	self.last_lift_time = time.time()
+                self.write_log("Exiting!")
+                sys.exit(0)
 
             if (self.read_arduino()[0]):
                 self.last_lift_time = time.time()
