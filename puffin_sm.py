@@ -17,7 +17,7 @@ class PuffinSm(object):
     #XXX Fix this to match the target platform 
     #configuration data
     logfile = "./puffin.log"
-    mp3_root = "/home/penguinphone/dialastory/mp3s/"
+    mp3_root = "./mp3s/"
     intro_mp3="audio/Saffran Intro.mp3"
     mistake_mp3="audio/Saffran Mistake.mp3"
     switchboard_mp3 = "audio/All Numbers.mp3"
@@ -180,8 +180,8 @@ class PuffinSm(object):
             	#self.sound_ringer()
             	self.write_log("Reached 600 second timeout, sounding ringer\n")
             	self.last_lift_time = time.time()
-                self.write_log("Exiting!")
-                sys.exit(0)
+                #self.write_log("Exiting!")
+                #sys.exit(0)
 
             if (self.read_arduino()[0]):
                 self.last_lift_time = time.time()

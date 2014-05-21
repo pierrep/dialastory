@@ -43,7 +43,7 @@ class Mp3Store(object):
     def __init__(self, wavname, mp3name, targetLocation):
         self.wavname = wavname
         self.mp3name = mp3name
-	self.targetLocation = targetLocation
+        self.targetLocation = targetLocation
     def compress(self):
         os.system("/usr/bin/lame %s %s 2>&1 > /dev/null" % (self.wavname, self.mp3name))
 	print "compression done, moving to " + self.targetLocation + self.mp3name
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     recorder = WavRecord(tmpwav)
     #recorder = WavRecord("test.wav")
     recorder.start()
-    for i in range(0,40):
+    for i in range(0,5):
         print i
         time.sleep(1)
     recorder.stop()
