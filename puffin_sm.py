@@ -207,7 +207,7 @@ class PuffinSm(object):
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load("audio/keysounds/"+str(key)+".mp3")
                     pygame.mixer.music.play()
-		    time.sleep(0.2)
+                    time.sleep(0.2)
                     break
                 elif key is not None:
         	    self.ser.flushInput()
@@ -216,11 +216,15 @@ class PuffinSm(object):
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load("audio/keysounds/"+str(key)+".mp3")
                     pygame.mixer.music.play()
-		    time.sleep(0.2)
+                    time.sleep(0.2)
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(self.mistake_mp3)
                     pygame.mixer.music.play()
                     while (not self.sound_ended()):
+                        (lifted,key2) = self.read_arduino()
+                        if (not lifted):
+                            self.write_log("User hung up!")
+                            break                        
                         pass
                     self.reset_arduino()
                     #play it again!
